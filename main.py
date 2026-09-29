@@ -17,9 +17,18 @@ def get_text():
     return text
 
 
-clear()
-text = get_text()
-for word in text.split():
-    print(word)
+def main():
     clear()
-    sleep(1)
+    sleep_amount = float(
+        input("how many seconds inbetween words do you want (you can go into decimals)")
+    )
+    text = get_text()
+    for word in text.split():
+        print(word)
+        clear()
+        sleep(sleep_amount)
+    print("\nDone")
+
+
+if __name__ == "__main__":
+    main()
