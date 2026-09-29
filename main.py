@@ -18,16 +18,24 @@ def get_text():
 
 
 def main():
-    clear()
-    sleep_amount = float(
-        input("how many seconds inbetween words do you want (you can go into decimals)")
-    )
     text = get_text()
+
+    # get the speed
+    clear()
+    try:
+        wpm = float(input("what wpm do you want? "))
+    except ValueError:
+        wpm = 1
+
+    sleep_time = 60 / wpm
+    # iterate over the words
+    clear()
     for word in text.split():
         print(word)
         clear()
-        sleep(sleep_amount)
-    print("\nDone")
+        sleep(sleep_time)
+
+    print("\ndone")
 
 
 if __name__ == "__main__":
