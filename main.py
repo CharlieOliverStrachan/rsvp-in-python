@@ -12,7 +12,7 @@ def get_text():
         with open("words.txt") as file:
             text = file.read()
     except FileNotFoundError:
-        print("you need to have a file named words.txt with your words in this folder")
+        print("you need to have a file named words.txt with your text (in this folder)")
         sys.exit()
     return text
 
@@ -39,4 +39,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("bye dude")
