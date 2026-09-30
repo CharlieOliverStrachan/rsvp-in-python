@@ -9,7 +9,7 @@ def clear():
 
 def get_text():
     try:
-        with open("words.txt") as file:
+        with open("words.txt", encoding="utf-8") as file:
             text = file.read()
     except FileNotFoundError:
         print("you need to have a file named words.txt with your text (in this folder)")
