@@ -1,6 +1,8 @@
 import sys
 from time import sleep
 
+import keyboard
+
 
 def clear():
     # using ascii escape codes or whatever
@@ -28,11 +30,14 @@ def main():
         wpm = 1
 
     sleep_time = 60 / wpm
+
     # iterate over the words
     clear()
     for word in text.split():
         print(word)
         clear()
+        while keyboard.is_pressed("g"):
+            sleep(0.10)
         sleep(sleep_time)
 
     print("\ndone")
