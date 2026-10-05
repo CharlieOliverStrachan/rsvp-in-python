@@ -13,6 +13,9 @@ def get_settings():
     except FileNotFoundError:
         print("no ssettings file detected! using defaults")
         settings = {"pause_key": "g", "default_wpm": 250, "text_file": "words.txt"}
+
+        with open("settings.json", "w") as file:
+            json.dump(settings, file)
         return settings
 
 
