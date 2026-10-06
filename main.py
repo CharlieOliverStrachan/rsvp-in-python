@@ -101,13 +101,21 @@ class Reader:
         print(f"(current total words read is {self.stats.words_read})")
 
 
-def main():
-    stats = Stats()
-    settings = Settings()
-    text = TextReader(settings.settings)
+class Menu:
+    def __init__(self):
+        self.stats = Stats()
+        self.settings = Settings()
+        self.text = TextReader(self.settings.settings)
 
-    reader = Reader(text.text, settings.settings, stats)
-    reader.read()
+        self.reader = Reader(self.text.text, self.settings.settings, self.stats)
+
+    def run(self):
+        self.reader.read()
+
+
+def main():
+    menu = Menu()
+    menu.run()
 
 
 if __name__ == "__main__":
