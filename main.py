@@ -98,7 +98,6 @@ class Reader:
             self.stats.save_stats()
 
         print("\ndone. ", end="")
-        print(f"(current total words read is {self.stats.words_read})")
 
 
 class Menu:
@@ -110,16 +109,34 @@ class Menu:
         self.reader = Reader(self.text.text, self.settings.settings, self.stats)
 
     def run(self):
-        menu = """--rsvp python--\nwhat do you want to do?\n\n1: read some text\n3: quit\n\n"""
-        choice = int(input(menu))
+        while True:
+            self.menu()
+
+    def menu(self):
+        menu = "what do you want to do?\n\n1: read some text\n2: view words read\n3: quit\n\n"
+
+        # get the proper input
+        while True:
+            try:
+                choice = int(input(menu))
+                if not 1 <= choice <= 3:
+                    raise ValueError
+                break
+            except ValueError:
+                print("\nenter a proper input from 1-3!\n")
+                sleep(1)
+                continue
         match choice:
             case 1:
                 self.reader.read()
+            case 2:
+                print(f"current total words read is {self.stats.words_read}")
             case 3:
                 raise KeyboardInterrupt
 
 
 def main():
+    print("--rsvp python--")
     menu = Menu()
     menu.run()
 
