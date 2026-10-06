@@ -110,7 +110,13 @@ class Menu:
         self.reader = Reader(self.text.text, self.settings.settings, self.stats)
 
     def run(self):
-        self.reader.read()
+        menu = """--rsvp python--\nwhat do you want to do?\n\n1: read some text\n3: quit\n\n"""
+        choice = int(input(menu))
+        match choice:
+            case 1:
+                self.reader.read()
+            case 3:
+                raise KeyboardInterrupt
 
 
 def main():
