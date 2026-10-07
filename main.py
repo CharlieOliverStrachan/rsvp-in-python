@@ -66,34 +66,37 @@ class Reader:
         self.stats = stats
 
     def clear(self):
-        # using ascii escape codes or whatever
         print("\033[2J\033[H", end="")
 
     def read(self):
-        # get the speed
         self.clear()
+        while True:
+            try:
+                wpm = input("what wpm do you want? ")
+                if not wpm:
+                    wpm = float(self.settings["default_wpm"])
+                    break
 
-        try:
-            wpm = float(input("what wpm do you want? "))
-        except ValueError:
-            wpm = self.settings["default_wpm"]
+                wpm = float(wpm)
+                if wpm <= 0:
+                    raise ValueError
+                break
+            except ValueError:
+                print("\nenter a positive number!\n")
+                sleep(1)
 
-        sleep_time = 60 / wpm
-
-        # iterate over the words
-        self.clear()
+        sleep_time = 60.0 / wpm
 
         try:
             for word in self.text.split():
-                print(word)
-                self.stats.words_read += 1
                 self.clear()
+                print(word, flush=True)
+                self.stats.words_read += 1
 
                 while keyboard.is_pressed(self.settings["pause_key"]):
                     sleep(0.10)
 
                 sleep(sleep_time)
-
         finally:
             self.stats.save_stats()
 
@@ -130,7 +133,8 @@ class Menu:
             case 1:
                 self.reader.read()
             case 2:
-                print(f"current total words read is {self.stats.words_read}")
+                print(f"\ncurrent total words read is {self.stats.words_read}\n")
+                sleep(1)
             case 3:
                 raise KeyboardInterrupt
 
