@@ -78,8 +78,7 @@ class TextReader:
         print("\nnew text file now saved :)\n")
 
     def create_text(self):
-        # text = input("\nenter your text:\n")
-        text = prompt("\nenter your text (press esc+enter to submit):\n\n", multiline=True)
+        text = prompt("\nenter your text (press esc + enter to submit):\n\n", multiline=True)
         self.save_text(text)
 
 
@@ -175,6 +174,7 @@ class Menu:
             self.menu()
 
     def menu(self):
+        sleep(1.5)
         menu = (
             "what do you want to do?\n\n"
             "1: read some text\n"
@@ -195,7 +195,6 @@ class Menu:
 
             except ValueError:
                 print("\nenter a proper input from 1-4!\n")
-                sleep(1)
                 continue
 
         match choice:
@@ -210,7 +209,6 @@ class Menu:
                 print(
                     f"\ncurrent total words read is {self.stats.words_read}\n"
                 )
-                sleep(1)
 
             case 4:
                 raise KeyboardInterrupt
