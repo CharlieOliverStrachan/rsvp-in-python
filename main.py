@@ -52,11 +52,11 @@ class TextReader:
                 text = file.read()
         except FileNotFoundError:
             print(
-                f"you need to have a file named {self.settings["text_file"]} with your text (in this folder)!"
+                f"you need to have a file named {self.settings['text_file']} with your text (in this folder)!"
             )
             choice = input("\nwould you like to create one now? (Y/n): ")
             if choice.strip().lower() == "n":
-                sys.exit()  
+                sys.exit()
             else:
                 self.create_text()
 
@@ -64,8 +64,8 @@ class TextReader:
 
     def save_text(self, text):
         with open(self.settings["text_file"], "w", encoding="utf-8") as file:
-            file = file.write(text)
-        self.text = file
+            file.write(text)
+        self.text = text
         print("\nnew text file now saved :)\n")
 
     def create_text(self):
@@ -147,6 +147,7 @@ class Menu:
                 self.reader.read()
             case 2:
                 self.text.create_text()
+                self.reader.text = self.text.text
             case 3:
                 print(f"\ncurrent total words read is {self.stats.words_read}\n")
                 sleep(1)
