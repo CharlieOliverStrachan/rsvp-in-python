@@ -31,8 +31,8 @@ class Settings:
             with open("settings.json", "r") as file:
                 settings = json.load(file)
                 return settings
-        except FileNotFoundError:
-            print("no settings file detected! using defaults")
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("absent or invalid settings file detected! using defaults")
             settings = {"pause_key": "g", "default_wpm": 250, "text_file": "words.txt"}
 
             with open("settings.json", "w") as file:
@@ -52,12 +52,25 @@ class TextReader:
                 text = file.read()
         except FileNotFoundError:
             print(
-                "you need to have a file named words.txt with your text (in this folder)"
+                f"you need to have a file named {self.settings["text_file"]} with your text (in this folder)!"
             )
-            sys.exit()
+            choice = input("\nwould you like to create one now? (Y/n): ")
+            if choice.strip().lower() == "n":
+                sys.exit()  
+            else:
+                self.create_text()
 
-        return text
+            return self.text
 
+    def save_text(self, text):
+        with open(self.settings["text_file"], "w", encoding="utf-8") as file:
+            file = file.write(text)
+        self.text = file
+        print("\nnew text file now saved :)\n")
+
+    def create_text(self):
+        text = input("\nenter your text:\n")
+        self.save_text(text)
 
 class Reader:
     def __init__(self, text, settings, stats):
@@ -116,26 +129,28 @@ class Menu:
             self.menu()
 
     def menu(self):
-        menu = "what do you want to do?\n\n1: read some text\n2: view words read\n3: quit\n\n"
+        menu = "what do you want to do?\n\n1: read some text\n2: write some text\n3: view words read\n4: quit\n\n"
 
         # get the proper input
         while True:
             try:
                 choice = int(input(menu))
-                if not 1 <= choice <= 3:
+                if not 1 <= choice <= 4:
                     raise ValueError
                 break
             except ValueError:
-                print("\nenter a proper input from 1-3!\n")
+                print("\nenter a proper input from 1-4!\n")
                 sleep(1)
                 continue
         match choice:
             case 1:
                 self.reader.read()
             case 2:
+                self.text.create_text()
+            case 3:
                 print(f"\ncurrent total words read is {self.stats.words_read}\n")
                 sleep(1)
-            case 3:
+            case 4:
                 raise KeyboardInterrupt
 
 
