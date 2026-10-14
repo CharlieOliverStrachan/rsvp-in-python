@@ -3,6 +3,7 @@ import sys
 from time import sleep
 
 from pynput import keyboard
+from prompt_toolkit import prompt
 
 
 class Stats:
@@ -77,7 +78,8 @@ class TextReader:
         print("\nnew text file now saved :)\n")
 
     def create_text(self):
-        text = input("\nenter your text:\n")
+        # text = input("\nenter your text:\n")
+        text = prompt("\nenter your text (press esc+enter to submit):\n\n", multiline=True)
         self.save_text(text)
 
 
