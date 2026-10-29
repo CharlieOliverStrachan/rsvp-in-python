@@ -107,7 +107,7 @@ class Reader:
         self.text = text
         self.settings = settings
         self.stats = stats
-        self.pause_letters = [".", ",", ";", ":", "-"]
+        self.pause_letters = {".": 0.3, ",": 0.1, ":": 0.15, ";": 0.06, "-": 0.05}
         
         self.keyboard_listener = KeyboardListener(
             settings["pause_key"]
@@ -151,7 +151,7 @@ class Reader:
                 self.stats.words_read += 1
                 for char in word:
                     if char in self.pause_letters:
-                        sleep(0.35)
+                        sleep(self.pause_letters[char])
 
                 sleep(sleep_time)
 
