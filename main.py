@@ -1,5 +1,4 @@
 import json
-import sys
 from time import sleep
 
 from pynput import keyboard
@@ -64,7 +63,7 @@ class TextReader:
             choice = input("\nwould you like to create one now? (Y/n): ")
 
             if choice.strip().lower() == "n":
-                sys.exit()
+                raise KeyboardInterrupt
             else:
                 self.create_text()
 
@@ -108,7 +107,8 @@ class Reader:
         self.text = text
         self.settings = settings
         self.stats = stats
-
+        self.pause_letters = [".", ",", ";", ":", "-"]
+        
         self.keyboard_listener = KeyboardListener(
             settings["pause_key"]
         )
@@ -144,10 +144,14 @@ class Reader:
             for word in self.text.split():
                 while self.keyboard_listener.paused:
                     sleep(0.10)
+                    
 
                 self.clear()
                 print(word, flush=True)
                 self.stats.words_read += 1
+                for char in word:
+                    if char in self.pause_letters:
+                        sleep(0.35)
 
                 sleep(sleep_time)
 
@@ -171,7 +175,11 @@ class Menu:
 
     def run(self):
         while True:
-            self.menu()
+            try:
+                self.menu()
+            except KeyboardInterrupt:
+                print("\nbye dude")
+                break
 
     def menu(self):
         sleep(1.5)
@@ -221,7 +229,5 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("bye dude")
+    main()
+
