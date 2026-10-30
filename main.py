@@ -1,10 +1,13 @@
 import json
-from time import sleep
 
 from pynput import keyboard
 from prompt_toolkit import prompt
 
+from PyQt6 import QtTest
 
+def sleep(seconds):
+    QtTest.QTest.qWait(int(seconds * 1000))
+    
 class Stats:
     def __init__(self):
         self.words_read = self.get_stats()
@@ -107,12 +110,15 @@ class Reader:
         self.text = text
         self.settings = settings
         self.stats = stats
-        self.pause_letters = {".": 0.3, ",": 0.1, ":": 0.15, ";": 0.06, "-": 0.05}
         
         self.keyboard_listener = KeyboardListener(
             settings["pause_key"]
         )
 
+    def get_times(self, wpm):
+        multiplier = (60.0 / wpm) * 2
+        self.pause_letters = {".": 1.5 * multiplier, ",": 0.5 * multiplier, ":": 1 * multiplier, ";": 1 * multiplier}
+        
     def clear(self):
         print("\033[2J\033[H", end="")
 
@@ -131,6 +137,8 @@ class Reader:
 
                 if wpm <= 0:
                     raise ValueError
+                
+                self.get_times(wpm)
 
                 break
 
@@ -174,7 +182,7 @@ class Menu:
         )
 
     def run(self):
-        while True:
+        while True:  
             try:
                 self.menu()
             except KeyboardInterrupt:
